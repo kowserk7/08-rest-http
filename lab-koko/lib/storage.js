@@ -1,3 +1,5 @@
+import { lchmod } from 'fs';
+
 'use strict';
 
 const debug = require('debug')('http:storage');
@@ -15,18 +17,28 @@ storage.create = function(schema, item) {
   });
 };
 
-storage.fetchOne = function() {
+storage.fetchOne = function(schema, itemId) {
+  return new Promise ((resolve, reject) => {
+    if(!schema) return reject(new Error ('400 Cannot find record. Schema required'));
+    if(!itemId) return reject(new Error('400 Cannot find record. Item ID required'));
+    if (!memory[schema][itemId]) return reject(new Error('Cannot find record. Does not exist'));
+
+    return resolve (memory[schema][itemId]);
+  });
+};
+
+storage.fetchAll = function(schema) {
+  return new Promise((resolve, reject) => {
+    if(!schema) return reject (new Error ('400, Cannot find reord. Schema required'));
+    if(!memory[schema]) return reject(new Error ('400, cannot complete request. No records match Schema')):
+    let ids = Object.keys.
+  })
+};
+
+storage.update = function(schema, itemId, item) {
 
 };
 
-storage.fetchAll = function() {
-
-};
-
-storage.update = function() {
-
-};
-
-storage.delet = function() {
+storage.delete = function(schema, itemId) {
 
 };

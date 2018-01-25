@@ -25,7 +25,35 @@ module.exports = function (router) {
     }
   });
   router.get('/api/v1/note', (req,res) => {
-
+    if(req.url.query._id) {
+      storage.fetchOne('Note', req.url.query._id)
+        .then(note => {
+          res.writeHead(200, {'Content-Type': 'application/json'});
+          res.write(JSON.stringify(note));
+          res.end();
+        })
+        .catch(err => {
+          if (err.message.includes('400')){
+            res.writeHead(400, {'Content-Type': 'text/plain'});
+            res.write('Bad Request');
+            res.end();
+            return;
+          }
+        });
+    }
+    storage.fetchAll('Note') 
+      .then(ids => {
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.write(JSON.stringify(ids));
+        res.end();
+      })
+      .catch(err => {
+        if (err.message.startsWith('400')){
+          res.writeHead(400, {'COntent-Type': 'text/plain'});
+          res.write('Bad Request');
+          res.end();
+        }
+      });
   });
   router.put('/api/v1/note', (req,res) => {
 
