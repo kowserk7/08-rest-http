@@ -1,0 +1,29 @@
+{
+  "name": "08-rest-http",
+  "version": "1.0.0",
+  "description": "rest http",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kowserk7/08-rest-http.git"
+  },
+  "author": "Koko Kassa",
+  "license": "MIT ",
+  "bugs": {
+    "url": "https://github.com/kowserk7/08-rest-http/issues"
+  },
+  "homepage": "https://github.com/kowserk7/08-rest-http#readme",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "dotenv": "^4.0.0",
+    "eslint": "^4.16.0",
+    "jest": "^22.1.4",
+    "superagent": "^3.8.2"
+  }
+}
