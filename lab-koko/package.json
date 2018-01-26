@@ -11,7 +11,8 @@
     "test:debug": "DEBUG=http* jest -i",
     "start:watch": "nodemon index.js",
     "start:debug": "DEBUG=http* nodemon index.js"
-  },"jest": {
+  },
+  "jest": {
     "verbose": true,
     "testEnvironment": "node",
     "collectCoverage": true,

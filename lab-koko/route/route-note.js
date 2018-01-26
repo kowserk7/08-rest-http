@@ -15,7 +15,7 @@ module.exports = function (router) {
       debug(`There was a bad request: ${err}`);
 
       res.writeHead(400, {'Content-Type': 'text/plain'});
-      res.writeHead('Bad Request');
+      res.write('Bad Request');
       res.end();
     }
     storage.create('Note', newNote)
@@ -50,7 +50,7 @@ module.exports = function (router) {
             return;
           }
           res.writeHead(404, {'Content-Type': 'text/plain'});
-          res.write('Not Found');
+          res.write('Not found - get');
           res.end();
         });
       return;
@@ -68,7 +68,7 @@ module.exports = function (router) {
           res.end();
         }
         res.writeHead(404, {'Content-Type': 'text/plain'});
-        res.write('Not Found');
+        res.write('Not Found - get all');
         res.end();
       });
   });

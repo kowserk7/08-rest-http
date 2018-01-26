@@ -18,34 +18,40 @@ Router.prototype.get = function(endpoint, callback) {
 };
 
 Router.prototype.post = function(endpoint, callback) {
+  console.log(this.routes.POST[endpoint], 'wtf');
   this.routes.POST[endpoint] = callback;
 };
+
 Router.prototype.put = function(endpoint, callback) {
   this.routes.PUT[endpoint] = callback;
 };
+
 Router.prototype.delete = function(endpoint, callback) {
   this.routes.DELETE[endpoint] = callback;
 };
+
 Router.prototype.route = function() {
-  return (req,res) => {
+  return (req, res) => {
     Promise.all([
       urlParser(req),
       bodyParser(req),
     ])
       .then(() => {
-        debug('Succesfully parsed the Body and URL');
-
-        if (typeof this.routes[req.method][req.url.pathname] === 'function') {
-          this.routes[req.method][req.pathname](req,res);
+        debug('Successfully parsed the Body and URL');
+        console.log(this.routes[req.method][req.url.pathname], 'got here');
+        if(typeof this.routes[req.method][req.url.pathname] === 'function') {
+          this.routes[req.method][req.url.pathname](req, res);
           return;
         }
-        res.writeHead(404, {'Content-Type': 'test/plain'});
-        res.write('Not Found');
+
+        res.writeHead(404, {'Content-Type': 'text/plain'});
+        res.write('Not Found post');
         res.end();
         return;
       })
       .catch(err => {
-        debug(`There was am error parsing the URL or Body:${err}`);
+        debug(`There was an error parsing the URL or Body: ${err}`);
+
         res.writeHead(400, {'Content-Type': 'text/plain'});
         res.write('Bad Request');
         res.end();
