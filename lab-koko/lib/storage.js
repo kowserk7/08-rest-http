@@ -6,7 +6,6 @@ const memory = {};
 
 storage.create = function(schema, item) {
   debug('Created a new thing');
-
   return new Promise ((resolve, reject) => {
     if (!schema || !item) return reject(new Error ('Cannot create a new item; Schema and Item required'));
     if (!memory[schema]) memory[schema] = {};
@@ -14,7 +13,6 @@ storage.create = function(schema, item) {
     return resolve(memory[schema][item._id]);
   });
 };
-
 storage.fetchOne = function(schema, itemId) {
   return new Promise ((resolve, reject) => {
     if(!schema) return reject(new Error ('400 Cannot find record. Schema required'));
@@ -24,7 +22,6 @@ storage.fetchOne = function(schema, itemId) {
     return resolve (memory[schema][itemId]);
   });
 };
-
 storage.fetchAll = function(schema) {
   return new Promise((resolve, reject) => {
     if(!schema) return reject (new Error ('400, Cannot find reord. Schema required'));
@@ -33,24 +30,19 @@ storage.fetchAll = function(schema) {
     return resolve(ids);
   });
 };
-
 storage.update = function(schema, item) {
-  //NEW SHIT
   return new Promise((resolve, reject) => {
     if(!schema) return reject (new Error ('400, Cannot find reord. Schema required'));
     if(!memory[schema]) return reject(new Error ('400, cannot complete request. No records match Schema'));
-    memory[schema][item._id] = item; //this is the new data being updated and overiding current memory
-    return resolve(memory[schema][item._id]); //overide
-  //NEW SHIT
+    memory[schema][item._id] = item;
+    return resolve(memory[schema][item._id]);
   });
 };
-
 storage.delete = function(schema, itemId) {
   return new Promise((resolve, reject) => {
     if(!schema || !itemId) return reject (new Error ('400, Cannot find reord. Schema required'));
     if(!memory[schema]) return reject(new Error ('400, cannot complete request. No records match Schema'));
     delete (memory[schema][itemId]);
-    return resolve(memory[schema]); //overide
+    return resolve(memory[schema]); 
   });
-
 };
