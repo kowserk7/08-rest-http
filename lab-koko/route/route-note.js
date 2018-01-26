@@ -4,7 +4,7 @@ const storage = require('../lib/storage');
 const debug = require('debug')('http:route-note');
 
 module.exports = function (router) {
-  router.post('api/v1/note', (req,res) => {
+  router.post('/api/v1/note', (req,res) => {
     debug('POST /api/v1/note');
     console.log(`${req}`);
     let newNote;
@@ -28,7 +28,7 @@ module.exports = function (router) {
       })
       .catch(err => {
         debug(`There was a bad request: ${err}`);
-        res.writeHead(400, {'Constent-Type': 'test/plain'});
+        res.writeHead(400, {'Constent-Type': 'text/plain'});
         res.write('Bad Request');
         res.end();
         return;
