@@ -20,6 +20,7 @@ module.exports = function (request) {
         debug(`Completed request body: ${request.body}`);
         return resolve(request);
       } catch(err) {
+        console.log(err);
         return reject(err);
       }
     });

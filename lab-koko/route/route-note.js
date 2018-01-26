@@ -4,7 +4,7 @@ const storage = require('../lib/storage');
 const debug = require('debug')('http:route-note');
 
 module.exports = function (router) {
-  router.post('api/v1/note', (req,res) => {
+  router.post('/api/v1/note', (req,res) => {
     debug('POST /api/v1/note');
     console.log(`${req}`);
     let newNote;
@@ -28,7 +28,7 @@ module.exports = function (router) {
       })
       .catch(err => {
         debug(`There was a bad request: ${err}`);
-        res.writeHead(400, {'Constent-Type': 'test/plain'});
+        res.writeHead(400, {'Constent-Type': 'text/plain'});
         res.write('Bad Request');
         res.end();
         return;
@@ -73,9 +73,60 @@ module.exports = function (router) {
       });
   });
   router.put('/api/v1/note', (req,res) => {
+    console.log('req:', req.url.query);
+    debug('PUT /api/v1/note');
+    try {
+      console.log('try:', req);
+      let newNote = new Note(req.body.title, req.body.content);
+      newNote._id = req.url.query._id; // create a new object with the updated content and title and assigning it with the previous id.
+      console.log('newNote:', newNote);
+    
+      storage.update('Note', newNote)
+      
+        .then(storedNote => {
+          res.writeHead(201, {'Content-Type': 'application/json'});
+          res.write(JSON.stringify(storedNote));
+          res.end();
+          return;
+        })
+        .catch(err => {
+          debug(`There was a bad request: ${err}`);
+          res.writeHead(400, {'Constent-Type': 'text/plain'});
+          res.write('Bad Request');
+          res.end();
+          return;
+        });  
+    } catch (err) {
+      debug(`There was a bad request: ${err}`);
+
+      res.writeHead(400, {'Content-Type': 'text/plain'});
+      res.write('Bad Request');
+      res.end();
+    }
 
   });
   router.delete('/api/v1/note', (req,res) => {
-
+    console.log('>>>>>>>>>>>>>>>>: before storage' );
+    try {
+      storage.delete('Note', req.url.query._id)
+        .then (() => {
+          console.log('>>>>>>>>>>>>>>>>>>: after storage');
+          res.writeHead(200, {'Content-Type': 'text/plain'});
+          res.write('Record successfully deleted');
+          res.end();
+        })
+        .catch (err => {
+          debug(`There was a bad request: ${err}`);
+          res.writeHead(400, {'Content-Type': 'text/plain'});
+          res.write('Bad Request');
+          res.end();
+          return;
+        });
+    } catch (err) {
+      debug(`There was a bad request: ${err}`);
+      res.writeHead(400, {'Content-Type': 'text/plain'});
+      res.write('Bad Request');
+      res.end();
+    }
   });
 };

@@ -11,7 +11,7 @@ storage.create = function(schema, item) {
     if (!schema || !item) return reject(new Error ('Cannot create a new item; Schema and Item required'));
     if (!memory[schema]) memory[schema] = {};
     memory[schema][item._id] = item;
-    return resolve(menubar[schema[item._id]]);
+    return resolve(memory[schema][item._id]);
   });
 };
 
@@ -34,10 +34,23 @@ storage.fetchAll = function(schema) {
   });
 };
 
-storage.update = function(schema, itemId, item) {
-
+storage.update = function(schema, item) {
+  //NEW SHIT
+  return new Promise((resolve, reject) => {
+    if(!schema) return reject (new Error ('400, Cannot find reord. Schema required'));
+    if(!memory[schema]) return reject(new Error ('400, cannot complete request. No records match Schema'));
+    memory[schema][item._id] = item; //this is the new data being updated and overiding current memory
+    return resolve(memory[schema][item._id]); //overide
+  //NEW SHIT
+  });
 };
 
 storage.delete = function(schema, itemId) {
+  return new Promise((resolve, reject) => {
+    if(!schema || !itemId) return reject (new Error ('400, Cannot find reord. Schema required'));
+    if(!memory[schema]) return reject(new Error ('400, cannot complete request. No records match Schema'));
+    delete (memory[schema][itemId]);
+    return resolve(memory[schema]); //overide
+  });
 
 };
