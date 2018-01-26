@@ -43,7 +43,7 @@ Router.prototype.route = function() {
 
         console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', this.routes[req.method]);
         if(typeof this.routes[req.method][req.url.pathname] === 'function') {
-          console.log('>>>>>>>>>>>>>>>: before routes');
+          console.log('>>>>>>>>>>>>>>>: before routes', req.method);
           
           this.routes[req.method][req.url.pathname](req, res);
 

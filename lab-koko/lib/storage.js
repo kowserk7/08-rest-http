@@ -50,6 +50,7 @@ storage.delete = function(schema, itemId) {
     if(!schema || !itemId) return reject (new Error ('400, Cannot find reord. Schema required'));
     if(!memory[schema]) return reject(new Error ('400, cannot complete request. No records match Schema'));
     delete (memory[schema][itemId]);
-  //NEW SHIT
+    return resolve(memory[schema]); //overide
   });
+
 };

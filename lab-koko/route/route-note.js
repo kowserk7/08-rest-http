@@ -106,7 +106,27 @@ module.exports = function (router) {
 
   });
   router.delete('/api/v1/note', (req,res) => {
-    
-
+    console.log('>>>>>>>>>>>>>>>>: before storage' );
+    try {
+      storage.delete('Note', req.url.query._id)
+        .then (() => {
+          console.log('>>>>>>>>>>>>>>>>>>: after storage');
+          res.writeHead(200, {'Content-Type': 'text/plain'});
+          res.write('Record successfully deleted');
+          res.end();
+        })
+        .catch (err => {
+          debug(`There was a bad request: ${err}`);
+          res.writeHead(400, {'Content-Type': 'text/plain'});
+          res.write('Bad Request');
+          res.end();
+          return;
+        });
+    } catch (err) {
+      debug(`There was a bad request: ${err}`);
+      res.writeHead(400, {'Content-Type': 'text/plain'});
+      res.write('Bad Request');
+      res.end();
+    }
   });
 };
