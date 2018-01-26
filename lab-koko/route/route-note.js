@@ -73,9 +73,40 @@ module.exports = function (router) {
       });
   });
   router.put('/api/v1/note', (req,res) => {
+    console.log('req:', req.url.query);
+    debug('PUT /api/v1/note');
+    try {
+      console.log('try:', req);
+      let newNote = new Note(req.body.title, req.body.content);
+      newNote._id = req.url.query._id; // create a new object with the updated content and title and assigning it with the previous id.
+      console.log('newNote:', newNote);
+    
+      storage.update('Note', newNote)
+      
+        .then(storedNote => {
+          res.writeHead(201, {'Content-Type': 'application/json'});
+          res.write(JSON.stringify(storedNote));
+          res.end();
+          return;
+        })
+        .catch(err => {
+          debug(`There was a bad request: ${err}`);
+          res.writeHead(400, {'Constent-Type': 'text/plain'});
+          res.write('Bad Request');
+          res.end();
+          return;
+        });  
+    } catch (err) {
+      debug(`There was a bad request: ${err}`);
+
+      res.writeHead(400, {'Content-Type': 'text/plain'});
+      res.write('Bad Request');
+      res.end();
+    }
 
   });
   router.delete('/api/v1/note', (req,res) => {
+    
 
   });
 };

@@ -34,7 +34,7 @@ storage.fetchAll = function(schema) {
   });
 };
 
-storage.update = function(schema, itemId, item) {
+storage.update = function(schema, item) {
   //NEW SHIT
   return new Promise((resolve, reject) => {
     if(!schema) return reject (new Error ('400, Cannot find reord. Schema required'));
