@@ -9,9 +9,9 @@ module.exports = function (request) {
 
     let message = '';
 
-    request.on ('data', data => {
-      debug(`Chunmked request data: ${data.toString()}`);
-      message =+ data.toString();
+    request.on('data', data => {
+      debug(`Chunked request data: ${data.toString()}`);
+      message += data.toString();
     });
 
     request.on('end', () => {
@@ -19,13 +19,14 @@ module.exports = function (request) {
         request.body = JSON.parse(message);
         debug(`Completed request body: ${request.body}`);
         return resolve(request);
-      } catch (err) {
+      } catch(err) {
         return reject(err);
       }
     });
+
     request.on('error', err => {
-      debug(`Error occured on parsing request body: ${err}`);
-      return reject (err);
+      debug(`Error occurred on parsing request body: ${err}`);
+      return reject(err);
     });
   });
 };

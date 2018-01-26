@@ -1,5 +1,3 @@
-import { lchmod } from 'fs';
-
 'use strict';
 
 const debug = require('debug')('http:storage');
@@ -30,9 +28,10 @@ storage.fetchOne = function(schema, itemId) {
 storage.fetchAll = function(schema) {
   return new Promise((resolve, reject) => {
     if(!schema) return reject (new Error ('400, Cannot find reord. Schema required'));
-    if(!memory[schema]) return reject(new Error ('400, cannot complete request. No records match Schema')):
-    let ids = Object.keys.
-  })
+    if(!memory[schema]) return reject(new Error ('400, cannot complete request. No records match Schema'));
+    let ids = Object.keys(memory[schema]);
+    return resolve(ids);
+  });
 };
 
 storage.update = function(schema, itemId, item) {
