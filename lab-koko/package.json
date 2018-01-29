@@ -16,7 +16,7 @@
     "verbose": true,
     "testEnvironment": "node",
     "collectCoverage": true,
-    "coverageDirectory": "./coverage",
+    "coverageDirectory": ".node_modules/coverage",
     "coverageThreshold": {
       "global": {
         "branches": 80,
