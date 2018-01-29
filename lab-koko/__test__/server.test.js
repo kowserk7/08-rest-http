@@ -69,6 +69,8 @@ describe('Server Integration Testing', function () {
     });
   });
 
+
+  
   describe('PUT /api/v1/note', () => {
     let postOne, putOne;
     beforeAll(() => {
@@ -84,8 +86,14 @@ describe('Server Integration Testing', function () {
         });
     });
     it('should respond with a status code of 200', () => {
-      expect(putOne.status).toBe(201);
+      expect(putOne.status).toBe(200);
     });    
+    it('should responf with an error of 400', () => {
+      return superagent.del(':4000/api/v1/note')
+        .catch (err => {
+          expect(err.status).toBe(400);
+        });
+    });
     it('should update a record', () => {
       return superagent.get(`:4000/api/v1/note?_id=${putOne.body._id}`)
         .then (res => {
@@ -94,6 +102,8 @@ describe('Server Integration Testing', function () {
         });
     });
   });
+
+
 
   describe('DELETE /api/v1/note', () => {
     let postOne, postTwo;
@@ -110,7 +120,7 @@ describe('Server Integration Testing', function () {
             });
         });
     });
-    it('should return with a status of 201', () => {
+    it('should return with a status of 200', () => {
       return superagent.delete(`:4000/api/v1/note?_id=${postOne.body._id}`)
         .then(res => {
           expect(res.status).toBe(200);
