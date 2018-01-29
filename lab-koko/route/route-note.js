@@ -6,7 +6,6 @@ const debug = require('debug')('http:route-note');
 module.exports = function (router) {
   router.post('/api/v1/note', (req,res) => {
     debug('POST /api/v1/note');
-    console.log(`${req}`);
     let newNote;
     try {
       newNote = new Note(req.body.title, req.body.content);

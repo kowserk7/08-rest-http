@@ -15,7 +15,6 @@ describe('Server Integration Testing', function () {
       return superagent.post(':4000/api/v1/note')
         .send({ title: 'hello', content: 'watman' })
         .then(res => {
-          console.log(res);
           resPost = res;
         });
     });
@@ -39,7 +38,6 @@ describe('Server Integration Testing', function () {
       return superagent.post(':4000/api/v1/note')
         .send({ title: 'hello', content: 'watman' })
         .then(res => {
-          console.log(res);
           postOne = res;
         });
     });
@@ -72,23 +70,57 @@ describe('Server Integration Testing', function () {
   });
 
   describe('PUT /api/v1/note', () => {
-    it('should update a record', () => {
-
+    let postOne, putOne;
+    beforeAll(() => {
+      return superagent.post(':4000/api/v1/note')
+        .send({title: 'title', content: 'content'})
+        .then( res => {
+          postOne = res;
+          return superagent.put(':4000/api/v1/note')
+            .send({title: 'title2', content: 'content 2'})
+            .then (res => {
+              putOne = res;
+            });
+        });
     });
     it('should respond with a status code of 200', () => {
-
+      expect(putOne.status).toBe(201);
     });    
-    it('should have the same id before it was updated', () => {
-
+    it('should update a record', () => {
+      return superagent.get(`:4000/api/v1/note?_id=${putOne.body._id}`)
+        .then (res => {
+          expect(res.body.content).toEqual('content 2');
+          expect(res.body.title).toEqual('title2');
+        });
     });
   });
+
   describe('DELETE /api/v1/note', () => {
-    it('should ..', () => {
+    let postOne, postTwo;
 
+    beforeAll(() => {
+      return superagent.post(':4000/api/v1/note')
+        .send({title: 'title', content: 'content'})
+        .then(res => {
+          postOne = res;
+          return superagent.post(':4000/api/v1/note')
+            .send({title: 'title2', content: 'content2'})
+            .then(res => {
+              postTwo = res;
+            });
+        });
     });
-    it('should ..', () => {
-
-    });    
-    
+    it('should return with a status of 201', () => {
+      return superagent.delete(`:4000/api/v1/note?_id=${postOne.body._id}`)
+        .then(res => {
+          expect(res.status).toBe(200);
+        });
+    });
+    it('should check that the record was deleted', () => {
+      return superagent.get(`:4000/api/v1/note?_id=${postTwo.body._id}`)
+        .catch(res => {
+          expect(res.status).toBe(400);
+        });
+    });
   });
 });
